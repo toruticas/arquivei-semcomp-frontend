@@ -1,13 +1,14 @@
 var path = require('path')
 var webpack = require('webpack')
 var express = require('express')
-var { renderToString } = require('react-dom/server')
 
 var config = require('./webpack.config')
 var app = express()
 var compiler = webpack(config)
 
 app.set('view engine', 'ejs')
+
+app.use(express.static('public'));
 
 app.use(require('webpack-dev-middleware')(compiler, {
   publicPath: config.output.publicPath
