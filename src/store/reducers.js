@@ -1,10 +1,11 @@
 import * as constants from './constants'
 
-const emptyItem = { label: '', selector: '' }
+const emptyItem = { name: '', selector: '' }
 
 const scaffold = {
   list: [{ ...emptyItem }],
-  result: '',
+  listMirror: [],
+  data: [],
 }
 
 const reducers = (state = scaffold, action) => {
@@ -14,18 +15,18 @@ const reducers = (state = scaffold, action) => {
         ...state,
         list: state.list.map((item, index) => {
           if (action.index === index) {
-            return { label: item.label, selector: action.selector }
+            return { name: item.name, selector: action.selector }
           }
 
           return item
         })
       }
-    case constants.CHANGE_LABEL:
+    case constants.CHANGE_NAME:
       return {
         ...state,
         list: state.list.map((item, index) => {
           if (action.index === index) {
-            return { label: action.label, selector: item.selector }
+            return { name: action.name, selector: item.selector }
           }
 
           return item

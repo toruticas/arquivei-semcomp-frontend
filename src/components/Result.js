@@ -1,24 +1,36 @@
 import React from 'react'
-import { connect } from 'react-redux'
 
-const Result = ({ result = '' }) => (
-  <form action="/" method="POST">
-    <textarea rows={15} disabled defaultValue={result} />
+const Result = ({ warning = false, list = [], prepareForm, url }) => {
+  return (
+    <div className={`card ${warning ? "border-warning" : ""}`} style={{ marginBottom: 10 }}>
+      <div className="card-header">
+        <h4>
+          {url}
+        </h4>
+      </div>
+      <div className="card-body">
+        {list.map((item, index) => (
+          <div className="card" style={{ marginTop: 10 }}>
+            <div className="card-body">
+              <strong>{`<${item.name}>: `}</strong>
 
-    <br />
+              {item.selector}
 
-    <button type="submit">{"Save"}</button>
-  </form>
-)
+              <pre>{item.value}</pre>
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    result: state.result,
-  }
+              {prepareForm ?
+                <div>
+                  <input type="hidden" name={`name[${index}]`} value={item.name}/>
+                  <input type="hidden" name={`selector[${index}]`} value={item.selector}/>
+                  <input type="hidden" name={`value[${index}]`} value={item.value}/>
+                </div>
+              : false}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
 }
 
-const Connect = connect(
-  mapStateToProps
-)(Result)
-
-export default Connect
+export default Result

@@ -4,8 +4,8 @@ export function changeSelector(index, selector) {
   return { type: constants.CHANGE_SELECTOR, index, selector }
 }
 
-export function changeLabel(index, label) {
-  return { type: constants.CHANGE_LABEL, index, label }
+export function changeName(index, name) {
+  return { type: constants.CHANGE_NAME, index, name }
 }
 
 export function addNewItem() {

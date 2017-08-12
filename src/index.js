@@ -6,7 +6,12 @@ import { Provider } from 'react-redux'
 import App from './App';
 import reducers from './store/reducers'
 
-let store = createStore(reducers, window.__INITIAL_STATE__)
+const initialState = window.__INITIAL_STATE__
+if (initialState.list && initialState.list.length) {
+  initialState.listMirror = JSON.parse(JSON.stringify(initialState.list))
+}
+
+const store = createStore(reducers, initialState)
 
 ReactDOM.render(
   <Provider store={store}>
