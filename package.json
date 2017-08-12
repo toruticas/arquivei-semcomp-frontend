@@ -30,6 +30,7 @@
     "webpack-hot-middleware": "^2.10.0"
   },
   "dependencies": {
+    "body-parser": "^1.17.2",
     "ejs": "^2.5.7",
     "react": "^0.14.6",
     "react-dom": "~0.14.6",

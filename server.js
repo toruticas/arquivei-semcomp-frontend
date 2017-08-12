@@ -1,12 +1,17 @@
 const path = require('path')
 const webpack = require('webpack')
 const express = require('express')
+const bodyParser = require('body-parser')
 
 const config = require('./webpack.config')
 const app = express()
 const compiler = webpack(config)
 
-const IS_CONNECTED = process.argv.includes("--connected", "-c")
+const IS_CONNECTED = process.argv.includes("--connected", "-c") || process.argv.includes("-c")
+
+if (IS_CONNECTED) {
+  console.log("Server is connected to backend");
+}
 
 const faker = {
   initial: {
@@ -56,6 +61,7 @@ const faker = {
 app.set('view engine', 'ejs')
 
 app.use(express.static('public'))
+app.use(bodyParser.json())
 
 app.use(require('webpack-dev-middleware')(compiler, {
   publicPath: config.output.publicPath
@@ -64,10 +70,8 @@ app.use(require('webpack-dev-middleware')(compiler, {
 app.use(require('webpack-hot-middleware')(compiler))
 
 app.all('*', function(req, res) {
-  let body
-
   if (IS_CONNECTED) {
-    res.render('index', { initial: JSON.stringify(body) })
+    res.render('index', { initial: JSON.stringify(req.body) })
   } else if (req.path === "/run") {
     res.render('index', { initial: JSON.stringify(faker.run) })
   } else if (req.path === "/save") {
