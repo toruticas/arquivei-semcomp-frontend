@@ -48,6 +48,11 @@ const reducers = (state = scaffold, action) => {
           return accumulator
         }, []),
       }
+    case constants.CHANGE_URL:
+      return {
+        ...state,
+        url: action.url,
+      }
     default:
       return { ...scaffold, ...state }
   }

@@ -5,7 +5,16 @@ import * as actions from './store/actions'
 import List from './components/List'
 import Result from './components/Result'
 
-const App = ({ list = [], listMirror, data, addItem, runScrapper, url, endpoint }) => (
+const App = ({
+  list = [],
+  listMirror = [],
+  data = [],
+  addItem,
+  url = "",
+  urlMirror = "",
+  onChangeUrl,
+  endpoint = "",
+}) => (
   <div>
     <div className="container-fluid">
       <div className="row">
@@ -19,7 +28,13 @@ const App = ({ list = [], listMirror, data, addItem, runScrapper, url, endpoint 
       <form action={`${endpoint}/run`} method="POST">
         <div className="row">
           <div className="col-lg-12" style={{marginTop: 20}}>
-            <input className="form-control" placeholder="URL"/>
+            <input
+              className="form-control"
+              placeholder="URL"
+              name="url"
+              value={url}
+              onChange={onChangeUrl}
+            />
           </div>
           {list.map((item, index) => <List index={index} key={index} />)}
 
@@ -44,10 +59,11 @@ const App = ({ list = [], listMirror, data, addItem, runScrapper, url, endpoint 
 
       {listMirror.length ?
         <form action={`${endpoint}/save`} method="POST">
+          <input type="hidden" name="url" value={urlMirror} />
           <div className="row" style={{ marginTop: 40 }}>
             <div className="col-lg-12">
               <h1>{"Data to save:"}</h1>
-              <Result url={url} warning={true} list={listMirror} prepareForm />
+              <Result url={urlMirror} warning={true} list={listMirror} prepareForm />
             </div>
             <div className="col-lg-4" style={{ marginTop: 10 }}>
               <button
@@ -80,6 +96,7 @@ const mapStateToProps = (state, ownProps) => {
     list: state.list,
     listMirror: state.listMirror,
     url: state.url,
+    urlMirror: state.urlMirror
   }
 }
 
@@ -88,6 +105,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     addItem: () => {
       dispatch(actions.addNewItem())
     },
+    onChangeUrl: (event) => {
+      dispatch(actions.onChangeUrl(event.target.value))
+    }
   }
 }
 

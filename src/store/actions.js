@@ -15,3 +15,7 @@ export function addNewItem() {
 export function removeItem(index) {
   return { type: constants.REMOVE_ITEM, index }
 }
+
+export function onChangeUrl(url) {
+  return { type: constants.CHANGE_URL, url }
+}

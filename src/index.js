@@ -11,6 +11,10 @@ if (initialState.list && initialState.list.length) {
   initialState.listMirror = JSON.parse(JSON.stringify(initialState.list))
 }
 
+if (initialState.url && initialState.url.length) {
+  initialState.urlMirror = JSON.parse(JSON.stringify(initialState.url))
+}
+
 const store = createStore(reducers, initialState)
 
 ReactDOM.render(
