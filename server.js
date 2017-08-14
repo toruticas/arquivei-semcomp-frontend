@@ -1,8 +1,16 @@
+import React from 'react'
+import { createStore } from 'redux'
+
 const path = require('path')
 const webpack = require('webpack')
 const express = require('express')
 const bodyParser = require('body-parser')
 const fs = require("fs")
+const { renderToStaticMarkup } = require("react-dom/server")
+const { Provider } = require("react-redux")
+
+import App from "./src/App"
+import reducers from './src/store/reducers'
 
 const config = require('./webpack.config')
 const app = express()
@@ -78,18 +86,37 @@ app.use(require('webpack-dev-middleware')(compiler, {
 app.use(require('webpack-hot-middleware')(compiler))
 
 app.all('*', function(req, res) {
-  let state = {}
+  let content, state = {}
+
   if (IS_CONNECTED) {
-    state = { initial: JSON.stringify(req.body) }
+    state = { initial: req.body }
   } else if (req.path === "/run") {
-    state = { initial: JSON.stringify(faker.run) }
+    state = { initial: faker.run }
   } else if (req.path === "/save") {
-    state = { initial: JSON.stringify(faker.save) }
+    state = { initial: faker.save }
   } else {
-    state = { initial: JSON.stringify(faker.initial) }
+    state = { initial: faker.initial }
   }
 
-  res.render('index', Object.assign(state, { banner, bgImage, bundle }))
+  if (state.initial.list && state.initial.list.length) {
+    state.initial.listMirror = JSON.parse(JSON.stringify(state.initial.list))
+  }
+
+  if (state.initial.url && state.initial.url.length) {
+    state.initial.urlMirror = JSON.parse(JSON.stringify(state.initial.url))
+  }
+
+  global.window = { "__BANNER_IMG_BASE64__": `data:image/png;base64,${banner}` }
+
+  content = renderToStaticMarkup(
+    <Provider store={createStore(reducers, state.initial)}>
+      <App />
+    </Provider>
+  )
+
+  state.initial = JSON.stringify(state.initial)
+
+  res.render('index', Object.assign(state, { banner, bgImage, bundle, content }))
 })
 
 app.listen(3000, function(err) {

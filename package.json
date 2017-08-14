@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "An example of frontend as microservice",
   "scripts": {
-    "start": "webpack && node server.js",
+    "start": "webpack && babel-node server.js",
     "lint": "eslint src",
     "webpack": "webpack"
   },
