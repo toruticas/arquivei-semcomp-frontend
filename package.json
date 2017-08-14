@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "An example of frontend as microservice",
   "scripts": {
-    "start": "node server.js",
-    "lint": "eslint src"
+    "start": "webpack && node server.js",
+    "lint": "eslint src",
+    "webpack": "webpack"
   },
   "repository": {
     "type": "git",

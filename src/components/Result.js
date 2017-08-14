@@ -10,7 +10,7 @@ const Result = ({ warning = false, list = [], prepareForm, url }) => {
       </div>
       <div className="card-body">
         {list.map((item, index) => (
-          <div className="card" style={{ marginTop: 10 }}>
+          <div className="card" style={{ marginTop: 10 }} key={index}>
             <div className="card-body">
               <strong>{`<${item.name}>: `}</strong>
 

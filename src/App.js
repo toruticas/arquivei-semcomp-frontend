@@ -6,14 +6,15 @@ import List from './components/List'
 import Result from './components/Result'
 
 const App = ({
+  addItem,
+  data = [],
+  endpoint = "",
+  id = "",
   list = [],
   listMirror = [],
-  data = [],
-  addItem,
+  onChangeUrl,
   url = "",
   urlMirror = "",
-  onChangeUrl,
-  endpoint = "",
 }) => (
   <div>
     <div className="container-fluid">
@@ -60,6 +61,7 @@ const App = ({
       {listMirror.length ?
         <form action={`${endpoint}/save`} method="POST">
           <input type="hidden" name="url" value={urlMirror} />
+          <input type="hidden" name="id" value={id} />
           <div className="row" style={{ marginTop: 40 }}>
             <div className="col-lg-12">
               <h1>{"Data to save:"}</h1>
@@ -81,7 +83,7 @@ const App = ({
         <div className="row" style={{ marginTop: 40 }}>
           <div className="col-lg-12">
             <h1>{"Data Saved"}</h1>
-            {data.map(item => <Result list={item.list} url={item.url} />)}
+            {data.map(item => <Result list={item.list} url={item.url} key={item.id}/>)}
           </div>
         </div>
       : false}
@@ -93,6 +95,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     data: state.data,
     endpoint: state.endpoint,
+    id: state.id,
     list: state.list,
     listMirror: state.listMirror,
     url: state.url,
